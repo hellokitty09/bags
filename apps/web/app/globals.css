@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    @apply bg-term-bg text-term-text font-mono;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: rgba(57, 255, 136, 0.25);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(57, 255, 136, 0.15);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(57, 255, 136, 0.3);
+  }
+
+  .scanlines::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(57, 255, 136, 0.03) 0px,
+      rgba(57, 255, 136, 0.03) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    z-index: 50;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-term-panel border border-term-border shadow-term rounded-sm;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .panel:hover {
+    border-color: rgba(57, 255, 136, 0.15);
+  }
+  .panel-header {
+    @apply flex items-center justify-between px-3 py-2 border-b border-term-border text-xs uppercase tracking-[0.2em] text-term-dim;
+  }
+  .panel-body {
+    @apply p-3;
+  }
+  .metric {
+    @apply flex flex-col gap-0.5;
+  }
+  .metric-label {
+    @apply text-[10px] uppercase tracking-[0.18em] text-term-dim;
+  }
+  .metric-value {
+    @apply text-xl tabular-nums text-term-text;
+  }
+  .metric-delta-up {
+    @apply text-term-green text-xs;
+  }
+  .metric-delta-down {
+    @apply text-term-red text-xs;
+  }
+  .caret::after {
+    content: "▋";
+    @apply text-term-green animate-blink ml-0.5;
+  }
+}
