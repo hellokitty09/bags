@@ -35,15 +35,24 @@ export async function GET(req: NextRequest) {
     return res;
   }
 
+  const sub = makeSubscriber();
+
+  // If Redis is unavailable, return a heartbeat-only stream (no crash)
+  if (!sub) {
+    const stream = sseStream<TxEvent>({ subscribe: async () => () => {} });
+    return new Response(stream, { headers: sseHeaders });
+  }
+
   const stream = sseStream<TxEvent>({
     async subscribe(push) {
-      const sub = makeSubscriber();
-      await sub.subscribe(feedChannel(mint));
-      sub.on("message", (_chan, message) => {
-        try {
-          push(JSON.parse(message) as TxEvent);
-        } catch {}
-      });
+      try {
+        await sub.subscribe(feedChannel(mint));
+        sub.on("message", (_chan, message) => {
+          try { push(JSON.parse(message) as TxEvent); } catch {}
+        });
+      } catch {
+        // Redis subscribe failed — stream stays open, just no events
+      }
       return () => {
         sub.unsubscribe().catch(() => {});
         sub.quit().catch(() => {});

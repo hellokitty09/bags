@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
             .onConflictDoNothing();
         }
 
-        await redis.publish(feedChannel(mint), JSON.stringify(event));
+        await redis?.publish(feedChannel(mint), JSON.stringify(event));
         ingested++;
       } catch (err) {
         console.error("helius ingest error", err);

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { env } from "@/lib/env";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
+import { computeFallbackInsight } from "@/lib/insights-fallback";
+import { getMarketSignal, getTokenHolders } from "@/lib/birdeye";
 import type { TimingInsight } from "@creator-intel/shared";
 
 export const runtime = "nodejs";
@@ -102,6 +104,30 @@ function generateNarrative(
   return parts.join("\n\n");
 }
 
+function buildFallbackTiming(
+  mint: string,
+  signals: EnrichedInsight["signals"],
+): TimingInsight & { regime?: RegimeInfo } {
+  const fallback = computeFallbackInsight(mint, {
+    buyPressurePct: signals.buyPressurePct,
+    sellPressurePct: signals.sellPressurePct,
+    volumeSpike: signals.volumeSpike,
+    priceAlert: signals.priceAlert,
+    whaleCount: signals.whaleCount,
+    topHolderPct: signals.topHolderPct,
+    gini: 0.5,
+    newHolders24h: 0,
+    totalHolders: 0,
+  });
+  return {
+    mint: fallback.mint,
+    bestWindows: fallback.bestWindows,
+    summary: fallback.summary,
+    generatedAt: fallback.generatedAt,
+    regime: fallback.regime as RegimeInfo,
+  };
+}
+
 export async function GET(req: NextRequest) {
   const mint = req.nextUrl.searchParams.get("mint");
   if (!mint)
@@ -175,32 +201,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(cached.payload as EnrichedInsight);
     }
 
-    // Fetch timing from ML service
-    const mlRes = await fetch(`${env.ML_SERVICE_URL}/insights/timing`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(env.ML_SERVICE_TOKEN
-          ? { Authorization: `Bearer ${env.ML_SERVICE_TOKEN}` }
-          : {}),
-      },
-      body: JSON.stringify({ mint }),
-      cache: "no-store",
-    });
-
-    let timing: TimingInsight & { regime?: RegimeInfo };
-    if (mlRes.ok) {
-      timing = await mlRes.json();
-    } else {
-      timing = {
-        mint,
-        bestWindows: [],
-        summary: "ML service unavailable — showing market signals only.",
-        generatedAt: new Date().toISOString(),
-      };
-    }
-
-    // Fetch market signals for enrichment
+    // Fetch real signals first — used for both ML enrichment and fallback
     let signalData: EnrichedInsight["signals"] = {
       buyPressurePct: 50,
       sellPressurePct: 50,
@@ -211,39 +212,50 @@ export async function GET(req: NextRequest) {
     };
 
     try {
-      const [sigRes, holdRes] = await Promise.all([
-        fetch(
-          `${req.nextUrl.origin}/api/signals?mint=${mint}`,
-          { cache: "no-store" },
-        ),
-        fetch(
-          `${req.nextUrl.origin}/api/holders?mint=${mint}`,
-          { cache: "no-store" },
-        ),
+      const [sig, hol] = await Promise.allSettled([
+        getMarketSignal(mint),
+        getTokenHolders(mint, 50),
       ]);
-      if (sigRes.ok) {
-        const sig = await sigRes.json();
-        signalData.buyPressurePct = sig.signal?.buyPressurePct ?? 50;
-        signalData.sellPressurePct = sig.signal?.sellPressurePct ?? 50;
-        signalData.volumeSpike = sig.signal?.volumeSpike ?? 1;
-        signalData.priceAlert = sig.signal?.priceAlert ?? "none";
+      if (sig.status === "fulfilled") {
+        signalData.buyPressurePct = sig.value.buyPressurePct;
+        signalData.sellPressurePct = sig.value.sellPressurePct;
+        signalData.volumeSpike = sig.value.volumeSpike;
+        signalData.priceAlert = sig.value.priceAlert;
       }
-      if (holdRes.ok) {
-        const hold = await holdRes.json();
-        signalData.whaleCount =
-          hold.entries?.filter(
-            (h: { tier: string }) => h.tier === "whale",
-          ).length ?? 0;
-        signalData.topHolderPct =
-          hold.entries
-            ?.slice(0, 10)
-            .reduce(
-              (a: number, h: { sharePct: number }) => a + h.sharePct,
-              0,
-            ) ?? 0;
+      if (hol.status === "fulfilled") {
+        const entries = hol.value;
+        signalData.whaleCount = entries.filter((h) => h.tier === "whale").length;
+        signalData.topHolderPct = entries.slice(0, 10).reduce((a, h) => a + h.sharePct, 0);
       }
     } catch {
-      // Best-effort enrichment; continue with defaults
+      // Best-effort; continue with defaults
+    }
+
+    // Try ML service (skip if pointing at localhost — not deployed)
+    const mlUrl = env.ML_SERVICE_URL;
+    const mlDeployed = !mlUrl.includes("localhost") && !mlUrl.includes("127.0.0.1");
+
+    let timing: TimingInsight & { regime?: RegimeInfo };
+    if (mlDeployed) {
+      try {
+        const mlRes = await fetch(`${mlUrl}/insights/timing`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(env.ML_SERVICE_TOKEN ? { Authorization: `Bearer ${env.ML_SERVICE_TOKEN}` } : {}),
+          },
+          body: JSON.stringify({ mint }),
+          cache: "no-store",
+          signal: AbortSignal.timeout(8000),
+        });
+        timing = mlRes.ok
+          ? await mlRes.json()
+          : buildFallbackTiming(mint, signalData);
+      } catch {
+        timing = buildFallbackTiming(mint, signalData);
+      }
+    } else {
+      timing = buildFallbackTiming(mint, signalData);
     }
 
     const regime: RegimeInfo = timing.regime ?? {

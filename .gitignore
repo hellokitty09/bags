@@ -19,3 +19,7 @@ apps/ml/__pycache__
 apps/ml/**/__pycache__
 apps/ml/.pytest_cache
 *.pyc
+.vercel
+graphify-out/
+.claude/settings.local.json
+*.tsbuildinfo
