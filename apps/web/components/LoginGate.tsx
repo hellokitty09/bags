@@ -49,24 +49,7 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    let cancelled = false;
-    fetch("/api/me/role", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((data) => {
-        if (cancelled) return;
-        if (data?.role === "creator" || data?.role === "trader") {
-          setCheckingRole(false);
-        } else {
-          router.replace("/onboarding");
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setCheckingRole(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
+    router.replace("/onboarding");
   }, [ready, authenticated, isDemo, router]);
 
   if (!ready && !isDemo) {

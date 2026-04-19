@@ -27,17 +27,7 @@ export function OnboardingClient() {
       return;
     }
 
-    // If role already set, skip onboarding
-    fetch("/api/me/role", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((data) => {
-        if (data?.role === "creator" || data?.role === "trader") {
-          router.replace("/terminal");
-        } else {
-          setChecking(false);
-        }
-      })
-      .catch(() => setChecking(false));
+    setChecking(false);
   }, [ready, authenticated, router]);
 
   async function chooseRole(role: Role) {

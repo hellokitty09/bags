@@ -86,9 +86,18 @@ export function Dashboard() {
 
         <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
           <div className="flex items-center border border-term-border/50 text-[10px] uppercase tracking-widest overflow-hidden">
-            <span className={`px-3 py-1.5 font-bold ${mode === "creator" ? "bg-term-green/20 text-term-green" : "bg-term-cyan/20 text-term-cyan"}`}>
-              {mode === "creator" ? "Creator Mode" : "Fan Mode"}
-            </span>
+            <button
+              onClick={() => switchMode("creator")}
+              className={`px-3 py-1.5 font-bold transition-colors ${mode === "creator" ? "bg-term-green/20 text-term-green" : "text-term-dim hover:bg-term-green/10 hover:text-term-green"}`}
+            >
+              Creator
+            </button>
+            <button
+              onClick={() => switchMode("trader")}
+              className={`px-3 py-1.5 font-bold transition-colors ${mode === "trader" ? "bg-term-cyan/20 text-term-cyan" : "text-term-dim hover:bg-term-cyan/10 hover:text-term-cyan"}`}
+            >
+              Fan
+            </button>
           </div>
           <TokenSwitcher
             value={mint}
