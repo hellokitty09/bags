@@ -85,11 +85,37 @@ export function Dashboard() {
         </div>
 
         <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-          <div className="flex items-center border border-term-border/50 text-[10px] uppercase tracking-widest overflow-hidden">
-            <span className={`px-3 py-1.5 font-bold ${mode === "creator" ? "bg-term-green/20 text-term-green" : "bg-term-cyan/20 text-term-cyan"}`}>
-              {mode === "creator" ? "Creator Mode" : "Fan Mode"}
-            </span>
-          </div>
+          {isDemo ? (
+            <div className="flex items-center border border-term-border/50 text-[10px] uppercase tracking-widest overflow-hidden">
+              <button
+                onClick={() => switchMode("creator")}
+                className={`px-3 py-1.5 font-bold transition-colors ${
+                  mode === "creator"
+                    ? "bg-term-green/20 text-term-green"
+                    : "text-term-dim hover:text-term-green/60"
+                }`}
+              >
+                Creator
+              </button>
+              <span className="text-term-border/50">|</span>
+              <button
+                onClick={() => switchMode("trader")}
+                className={`px-3 py-1.5 font-bold transition-colors ${
+                  mode === "trader"
+                    ? "bg-term-cyan/20 text-term-cyan"
+                    : "text-term-dim hover:text-term-cyan/60"
+                }`}
+              >
+                Fan
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center border border-term-border/50 text-[10px] uppercase tracking-widest overflow-hidden">
+              <span className={`px-3 py-1.5 font-bold ${mode === "creator" ? "bg-term-green/20 text-term-green" : "bg-term-cyan/20 text-term-cyan"}`}>
+                {mode === "creator" ? "Creator Mode" : "Fan Mode"}
+              </span>
+            </div>
+          )}
           <TokenSwitcher
             value={mint}
             onChange={(m, s) => {
