@@ -21,19 +21,20 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const { ready, authenticated, logout, user } = usePrivy();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [isDemo, setIsDemo] = useState(false);
+  const isDemoParam = searchParams.get("demo") === "true";
+  const [isDemo, setIsDemo] = useState(isDemoParam);
   const [checkingRole, setCheckingRole] = useState(true);
 
   // Handle ?demo=true query param + read existing demo cookie
   useEffect(() => {
-    if (searchParams.get("demo") === "true") {
+    if (isDemoParam) {
       setDemoCookie();
       setIsDemo(true);
       router.replace("/terminal");
     } else {
       setIsDemo(getDemoCookie());
     }
-  }, [searchParams, router]);
+  }, [isDemoParam, router]);
 
   // Route guard: unauthenticated & not demo → /login. Authed but no role → /onboarding.
   useEffect(() => {
