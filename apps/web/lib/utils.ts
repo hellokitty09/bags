@@ -5,26 +5,52 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+const numberFormatCache = new Map<string, Intl.NumberFormat>();
+
 export function fmtUsd(n: number, opts?: { compact?: boolean }) {
-  const f = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    notation: opts?.compact ? "compact" : "standard",
-    maximumFractionDigits: n < 1 ? 6 : 2,
-  });
-  return f.format(n);
+  const notation = opts?.compact ? "compact" : "standard";
+  const maximumFractionDigits = Math.abs(n) < 1 && n !== 0 ? 6 : 2;
+  const key = `usd-${notation}-${maximumFractionDigits}`;
+  let formatter = numberFormatCache.get(key);
+  if (!formatter) {
+    formatter = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      notation,
+      maximumFractionDigits,
+    });
+    numberFormatCache.set(key, formatter);
+  }
+  return formatter.format(n);
 }
 
 export function fmtPct(n: number, digits = 2) {
-  const sign = n > 0 ? "+" : "";
-  return `${sign}${n.toFixed(digits)}%`;
+  const key = `pct-${digits}`;
+  let formatter = numberFormatCache.get(key);
+  if (!formatter) {
+    formatter = new Intl.NumberFormat("en-US", {
+      style: "percent",
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
+      signDisplay: "exceptZero",
+    });
+    numberFormatCache.set(key, formatter);
+  }
+  return formatter.format(n / 100);
 }
 
 export function fmtNum(n: number, opts?: { compact?: boolean }) {
-  return new Intl.NumberFormat("en-US", {
-    notation: opts?.compact ? "compact" : "standard",
-    maximumFractionDigits: 2,
-  }).format(n);
+  const notation = opts?.compact ? "compact" : "standard";
+  const key = `num-${notation}`;
+  let formatter = numberFormatCache.get(key);
+  if (!formatter) {
+    formatter = new Intl.NumberFormat("en-US", {
+      notation,
+      maximumFractionDigits: 2,
+    });
+    numberFormatCache.set(key, formatter);
+  }
+  return formatter.format(n);
 }
 
 export function shortAddr(addr: string, edge = 4) {
