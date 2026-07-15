@@ -1,0 +1,1 @@
+## 2024-07-15 - [Test and Lint Setup]\n**Learning:** The `apps/web` package lacks an ESLint configuration file, which prevents `pnpm lint` from running successfully. Also `pnpm format` script is not configured.\n**Action:** Run `pnpm typecheck` and `pnpm test` to verify changes instead, and note the missing configurations.
