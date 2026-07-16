@@ -1,0 +1,3 @@
+## 2024-07-16 - Form accessibility improvements in TokenSwitcher
+**Learning:** Found multiple instances of unassociated form labels and missing ARIA attributes on inputs and icon-only buttons in the application. Specifically, `TokenSwitcher` lacked an associated label for its `<select>` dropdown and had missing `aria-label` attributes for its text input and icon-only cancel button.
+**Action:** When creating or modifying form components and inline forms in this codebase, ensure that labels are explicitly associated using `htmlFor` and `id`, and always add `aria-label`s to standalone inputs and icon-only buttons for screen reader accessibility.
