@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 
 interface TokenOption {
   mint: string;
@@ -66,13 +66,17 @@ export function TokenSwitcher({ value, onChange }: Props) {
     }
   }
 
+  const selectId = useId();
+  const inputId = useId();
+
   return (
     <div className="flex items-center gap-3 text-xs">
-      <label className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
+      <label htmlFor={selectId} className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
         token
       </label>
 
       <select
+        id={selectId}
         value={value ?? ""}
         onChange={(e) => {
           const t = tokens.find((x) => x.mint === e.target.value);
@@ -90,7 +94,9 @@ export function TokenSwitcher({ value, onChange }: Props) {
 
       {showInput ? (
         <div className="flex items-center gap-2 animate-fadeIn">
+          <label htmlFor={inputId} className="sr-only">Mint address</label>
           <input
+            id={inputId}
             autoFocus
             value={mintInput}
             onChange={(e) => setMintInput(e.target.value)}
@@ -101,7 +107,8 @@ export function TokenSwitcher({ value, onChange }: Props) {
           <button
             onClick={addToken}
             disabled={adding || !mintInput}
-            className="px-4 py-2 bg-term-green/10 border border-term-green text-term-green uppercase tracking-[0.15em] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-term-green/20 hover:shadow-[0_0_15px_rgba(57,255,136,0.2)] active:bg-term-green/30 transition-all duration-200 rounded-sm whitespace-nowrap"
+            aria-busy={adding}
+            className="px-4 py-2 bg-term-green/10 border border-term-green text-term-green uppercase tracking-[0.15em] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-term-green/20 hover:shadow-[0_0_15px_rgba(57,255,136,0.2)] active:bg-term-green/30 transition-all duration-200 rounded-sm whitespace-nowrap focus-visible:ring-1 focus-visible:ring-term-green focus-visible:outline-none"
           >
             {adding ? "linking…" : "link"}
           </button>
@@ -110,7 +117,8 @@ export function TokenSwitcher({ value, onChange }: Props) {
               setShowInput(false);
               setMintInput("");
             }}
-            className="px-2 py-2 text-term-dim hover:text-term-red transition-colors duration-200"
+            aria-label="Cancel token link"
+            className="px-2 py-2 text-term-dim hover:text-term-red transition-colors duration-200 focus-visible:ring-1 focus-visible:ring-term-red focus-visible:outline-none rounded-sm"
             title="Cancel"
           >
             ✕
