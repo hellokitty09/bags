@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 
 interface TokenOption {
   mint: string;
@@ -66,13 +66,16 @@ export function TokenSwitcher({ value, onChange }: Props) {
     }
   }
 
+  const selectId = useId();
+
   return (
     <div className="flex items-center gap-3 text-xs">
-      <label className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
+      <label htmlFor={selectId} className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
         token
       </label>
 
       <select
+        id={selectId}
         value={value ?? ""}
         onChange={(e) => {
           const t = tokens.find((x) => x.mint === e.target.value);
