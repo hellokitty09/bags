@@ -1,0 +1,3 @@
+## 2024-10-31 - Reusable Component Form Accessibility
+**Learning:** Hardcoded IDs in reusable components can cause clashes and invalidate form accessibility when rendered multiple times on a page. Unlabeled inputs and icon-only buttons create confusion for screen reader users.
+**Action:** Use React's `useId()` hook to dynamically generate unique IDs for explicit `htmlFor`/`id` `<label>` associations in components. Always ensure inputs without visible labels and icon-only buttons include descriptive `aria-label`s.

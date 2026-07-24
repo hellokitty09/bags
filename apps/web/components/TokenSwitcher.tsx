@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 
 interface TokenOption {
   mint: string;
@@ -18,6 +18,7 @@ export function TokenSwitcher({ value, onChange }: Props) {
   const [adding, setAdding] = useState(false);
   const [mintInput, setMintInput] = useState("");
   const [showInput, setShowInput] = useState(false);
+  const selectId = useId();
 
   useEffect(() => {
     fetch("/api/me")
@@ -68,11 +69,12 @@ export function TokenSwitcher({ value, onChange }: Props) {
 
   return (
     <div className="flex items-center gap-3 text-xs">
-      <label className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
+      <label htmlFor={selectId} className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
         token
       </label>
 
       <select
+        id={selectId}
         value={value ?? ""}
         onChange={(e) => {
           const t = tokens.find((x) => x.mint === e.target.value);
@@ -92,6 +94,7 @@ export function TokenSwitcher({ value, onChange }: Props) {
         <div className="flex items-center gap-2 animate-fadeIn">
           <input
             autoFocus
+            aria-label="Token mint address"
             value={mintInput}
             onChange={(e) => setMintInput(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -110,6 +113,7 @@ export function TokenSwitcher({ value, onChange }: Props) {
               setShowInput(false);
               setMintInput("");
             }}
+            aria-label="Cancel"
             className="px-2 py-2 text-term-dim hover:text-term-red transition-colors duration-200"
             title="Cancel"
           >
