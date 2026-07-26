@@ -1,0 +1,84 @@
+
+> web@0.1.0 dev /app/apps/web
+> next dev -p 3000
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+- Environments: .env.local
+✓ Ready in 533ms
+- Experiments (use with caution):
+  · serverActions
+
+○ Compiling / ...
+⨯ Error: Cannot initialize the Privy provider with an invalid Privy app ID
+    at ignore-listed frames {
+  privyErrorCode: undefined,
+  type: 'client_error',
+  digest: '240134962'
+}
+ GET / 500 in 23.2s (next.js: 20.7s, application-code: 2.6s)
+[browser] Uncaught Error: Cannot initialize the Privy provider with an invalid Privy app ID
+    at Providers (components/providers/Providers.tsx:32:5)
+    at RootLayout (app/layout.tsx:14:9)
+  30 |
+  31 |   return (
+> 32 |     <PrivyProvider
+     |     ^
+  33 |       appId={appId}
+  34 |       config={{
+  35 |         appearance: {
+○ Compiling /onboarding ...
+⨯ Error: Cannot initialize the Privy provider with an invalid Privy app ID
+    at ignore-listed frames {
+  privyErrorCode: undefined,
+  type: 'client_error',
+  digest: '240134962'
+}
+ GET /onboarding 500 in 5.9s (next.js: 5.7s, application-code: 191ms)
+[browser] Uncaught Error: Cannot initialize the Privy provider with an invalid Privy app ID
+    at Providers (components/providers/Providers.tsx:32:5)
+    at RootLayout (app/layout.tsx:14:9)
+  30 |
+  31 |   return (
+> 32 |     <PrivyProvider
+     |     ^
+  33 |       appId={appId}
+  34 |       config={{
+  35 |         appearance: {
+○ Compiling /terminal ...
+⨯ Error: Cannot initialize the Privy provider with an invalid Privy app ID
+    at ignore-listed frames {
+  privyErrorCode: undefined,
+  type: 'client_error',
+  digest: '240134962'
+}
+ GET /terminal 500 in 4.9s (next.js: 4.5s, application-code: 426ms)
+[browser] Uncaught Error: Cannot initialize the Privy provider with an invalid Privy app ID
+    at Providers (components/providers/Providers.tsx:32:5)
+    at RootLayout (app/layout.tsx:14:9)
+  30 |
+  31 |   return (
+> 32 |     <PrivyProvider
+     |     ^
+  33 |       appId={appId}
+  34 |       config={{
+  35 |         appearance: {
+○ Compiling /_not-found/page ...
+⨯ Error: Cannot initialize the Privy provider with an invalid Privy app ID
+    at ignore-listed frames {
+  privyErrorCode: undefined,
+  type: 'client_error',
+  digest: '240134962'
+}
+ GET /dashboard 500 in 3.4s (next.js: 3.2s, application-code: 154ms)
+[browser] Uncaught Error: Cannot initialize the Privy provider with an invalid Privy app ID
+    at Providers (components/providers/Providers.tsx:32:5)
+    at RootLayout (app/layout.tsx:14:9)
+  30 |
+  31 |   return (
+> 32 |     <PrivyProvider
+     |     ^
+  33 |       appId={appId}
+  34 |       config={{
+  35 |         appearance: {
