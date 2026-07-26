@@ -1,0 +1,3 @@
+## 2026-07-26 - [Improve Form Accessibility]
+**Learning:** Adding explicit IDs directly using `useId()` prevents conflicts for reusable elements, specifically when a `<select>` or `<input>` is not implicitly wrapped by its `<label>`. Screen readers also depend on explicit `aria-label` declarations for fields without visible textual labels (like the input field and '✕' cancel button in the token switcher).
+**Action:** Use `useId()` for all explicit form labelling when developing reusable components. Always ensure inputs or buttons that only rely on placeholders or icons have an `aria-label` attribute.
