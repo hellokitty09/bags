@@ -1,0 +1,3 @@
+## 2024-07-27 - Form Accessibility in Dynamic Components
+**Learning:** React components that conditionally render inputs or are used multiple times on a page risk ID collisions and unassociated labels if static strings or implicit labels are used. Icon-only interactive elements are frequently overlooked for screen-reader (`aria-label`) and keyboard (`focus-visible`) support.
+**Action:** Always use React's `useId()` hook to explicitly link `<label htmlFor={id}>` to `<select id={id}>` or `<input id={id}>`. Ensure all text inputs and icon-only buttons include descriptive `aria-label` attributes and explicit `focus-visible` styling for strict keyboard accessibility.
