@@ -1,0 +1,1 @@
+## 2024-07-29 - Token Switcher Accessibility\n**Learning:** Reusable form components like TokenSwitcher need dynamic IDs for label association to prevent duplicate ID issues if multiple instances are mounted. Hidden inputs/buttons need explicit aria-labels.\n**Action:** Always use useId() for label-to-input associations and verify icon-only or clear buttons have aria-labels.
