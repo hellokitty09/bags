@@ -1,0 +1,3 @@
+## 2024-10-24 - Accessibility Enhancements in TokenSwitcher
+**Learning:** The `TokenSwitcher` component dynamically rendered select elements and input forms without properly associating descriptive labels or handling focus state for the icon-only cancel button. The use of `useId()` ensures that label relationships via `htmlFor` remain robust even if the component is used multiple times.
+**Action:** When adding labels to dynamic or heavily reused form components, use Reacts `useId()` for `htmlFor` mapping instead of static string IDs. Always add `aria-label`s to select elements when the visual label is hidden on certain viewports, and ensure icon-only action buttons (like a cancel "✕") have an `aria-label` and visible focus states.
