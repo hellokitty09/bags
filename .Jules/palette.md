@@ -1,0 +1,3 @@
+## 2024-08-03 - Use `useId()` for Accessible Form Labels in Reusable Components
+**Learning:** When associating `<label>`s with inputs via `htmlFor` in generic or reusable React components (like `TokenSwitcher`), statically defining the ID can lead to ID collisions if the component is rendered multiple times on a single page, resulting in incorrect screen reader announcements or label clicks focusing the wrong input.
+**Action:** Always utilize React's `useId()` hook to dynamically generate unique, accessible IDs for form fields when building or updating shared components, ensuring reliable semantic associations regardless of component usage frequency.
