@@ -23,6 +23,7 @@ export function AuraCheckInput() {
         onChange={(e) => setMint(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleCheck()}
         placeholder="Paste any token mint address..."
+        aria-label="Paste any token mint address to check aura"
         className="flex-1 bg-term-bg border border-term-border/50 focus:border-term-cyan text-white text-xs px-4 py-3 outline-none placeholder:text-term-dim/40 font-mono transition-colors"
       />
       <button
