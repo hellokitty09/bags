@@ -1,0 +1,3 @@
+## 2025-02-12 - Fix missing form label associations and aria-labels in TokenSwitcher
+**Learning:** Reusable components handling user input dynamically need robust label associations to meet accessibility standards. React's `useId()` allows mapping labels to inputs and selects unambiguously, avoiding duplicate ID collision issues when a component is mounted multiple times.
+**Action:** Use `useId()` consistently to link `<label>` elements securely to form controls, explicitly for screen readers by employing `sr-only` class where visual layout rules omit text labels. Also ensure all icon-only buttons include descriptive `aria-label`s.
