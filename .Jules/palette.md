@@ -1,0 +1,3 @@
+## 2025-03-01 - Add ARIA Labels and useId to TokenSwitcher Component
+**Learning:** Found an inline input and icon-only close button within a dynamically added React list of Tokens inside the TokenSwitcher that were missing explicit labels for screen readers. Using React's `useId()` allows for robust, dynamic `<label htmlFor="...">` mapping, which is especially important for reusable or repeating elements to avoid hardcoded ID collisions.
+**Action:** When evaluating forms or custom interactive elements within list or switcher components, always check for missing implicit labels (e.g., `<label>...<input/></label>`) and missing ARIA attributes. Implement explicit labels with `useId()` in React to ensure accessibility for inputs that are not wrapped by their label.
