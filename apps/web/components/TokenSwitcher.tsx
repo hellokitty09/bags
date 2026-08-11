@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 
 interface TokenOption {
   mint: string;
@@ -14,6 +14,7 @@ interface Props {
 }
 
 export function TokenSwitcher({ value, onChange }: Props) {
+  const selectId = useId();
   const [tokens, setTokens] = useState<TokenOption[]>([]);
   const [adding, setAdding] = useState(false);
   const [mintInput, setMintInput] = useState("");
@@ -68,11 +69,13 @@ export function TokenSwitcher({ value, onChange }: Props) {
 
   return (
     <div className="flex items-center gap-3 text-xs">
-      <label className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
+      <label htmlFor={selectId} className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
         token
       </label>
 
       <select
+        id={selectId}
+        aria-label="Select token"
         value={value ?? ""}
         onChange={(e) => {
           const t = tokens.find((x) => x.mint === e.target.value);
@@ -92,6 +95,7 @@ export function TokenSwitcher({ value, onChange }: Props) {
         <div className="flex items-center gap-2 animate-fadeIn">
           <input
             autoFocus
+            aria-label="Token mint address"
             value={mintInput}
             onChange={(e) => setMintInput(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -103,7 +107,14 @@ export function TokenSwitcher({ value, onChange }: Props) {
             disabled={adding || !mintInput}
             className="px-4 py-2 bg-term-green/10 border border-term-green text-term-green uppercase tracking-[0.15em] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-term-green/20 hover:shadow-[0_0_15px_rgba(57,255,136,0.2)] active:bg-term-green/30 transition-all duration-200 rounded-sm whitespace-nowrap"
           >
-            {adding ? "linking…" : "link"}
+            {adding ? (
+              <span className="flex items-center gap-2">
+                <span className="w-3 h-3 border border-term-green/40 border-t-term-green rounded-full animate-spin" />
+                linking…
+              </span>
+            ) : (
+              "link"
+            )}
           </button>
           <button
             onClick={() => {
@@ -112,6 +123,7 @@ export function TokenSwitcher({ value, onChange }: Props) {
             }}
             className="px-2 py-2 text-term-dim hover:text-term-red transition-colors duration-200"
             title="Cancel"
+            aria-label="Cancel linking token"
           >
             ✕
           </button>
