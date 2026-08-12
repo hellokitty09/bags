@@ -1,0 +1,3 @@
+## 2026-15-12 - TokenSwitcher Accessibility Enhancement
+**Learning:** In reusable components where multiple instances might exist on the page, statically assigned id values can clash, which breaks the HTML `for`-to-`id` linkage for screen readers. Further, icon-only buttons like cancel (✕) often lack text making them indecipherable for screen readers.
+**Action:** Use React's `useId()` hook when explicitly associating form `<label>`s with inputs dynamically to prevent ID clashes in reusable components. Ensure all inputs and icon-only buttons consistently receive descriptive `aria-label` attributes.
