@@ -1,0 +1,3 @@
+## 2024-10-27 - [A11y: Unlabeled Selects and Icon Buttons in `TokenSwitcher`]
+**Learning:** React elements utilizing dynamically rendered inputs or selects across multiple instances may suffer from ID collisions if static `id` attributes are used, rendering `htmlFor` association invalid. Icon-only buttons (like `✕`) without `aria-label`s are inherently inaccessible to screen readers.
+**Action:** Always prefer React's `useId()` hook to link dynamically mounted form `<label>` and `<select>`/`<input>` tags. Consistently provide descriptive `aria-label` strings for any buttons or inputs that lack visible text content.

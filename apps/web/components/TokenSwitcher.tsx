@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 
 interface TokenOption {
   mint: string;
@@ -58,6 +58,8 @@ export function TokenSwitcher({ value, onChange }: Props) {
     }
   }
 
+  const tokenSelectId = useId();
+
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === "Enter") addToken();
     if (e.key === "Escape") {
@@ -68,11 +70,12 @@ export function TokenSwitcher({ value, onChange }: Props) {
 
   return (
     <div className="flex items-center gap-3 text-xs">
-      <label className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
+      <label htmlFor={tokenSelectId} className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
         token
       </label>
 
       <select
+        id={tokenSelectId}
         value={value ?? ""}
         onChange={(e) => {
           const t = tokens.find((x) => x.mint === e.target.value);
@@ -96,6 +99,7 @@ export function TokenSwitcher({ value, onChange }: Props) {
             onChange={(e) => setMintInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="paste mint address"
+            aria-label="Token mint address"
             className="bg-term-panel border border-term-border focus:border-term-green/60 focus:outline-none focus:shadow-[0_0_10px_rgba(57,255,136,0.1)] px-3 py-2 text-term-text w-[240px] sm:w-[300px] rounded-sm transition-all duration-200 placeholder:text-term-dim/50"
           />
           <button
@@ -112,6 +116,7 @@ export function TokenSwitcher({ value, onChange }: Props) {
             }}
             className="px-2 py-2 text-term-dim hover:text-term-red transition-colors duration-200"
             title="Cancel"
+            aria-label="Cancel linking token"
           >
             ✕
           </button>
