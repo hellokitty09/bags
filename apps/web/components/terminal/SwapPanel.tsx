@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import { Panel } from "./Panel";
 
 export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
   const [side, setSide] = useState<"buy" | "sell">("buy");
+  const amountInputId = useId();
   const [amount, setAmount] = useState<string>("");
   const [swapping, setSwapping] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -39,6 +40,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
         <div className="flex bg-term-bg border border-term-border p-1 rounded-sm">
           <button
             onClick={() => setSide("buy")}
+            aria-pressed={side === "buy"}
             className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors ${
               side === "buy" ? "bg-term-green/20 text-term-green border border-term-green/30" : "text-term-dim hover:text-white"
             }`}
@@ -47,6 +49,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
           </button>
           <button
             onClick={() => setSide("sell")}
+            aria-pressed={side === "sell"}
             className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors ${
               side === "sell" ? "bg-term-red/20 text-term-red border border-term-red/30" : "text-term-dim hover:text-white"
             }`}
@@ -58,11 +61,12 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
         {/* Input Form */}
         <div className="bg-term-bg border border-term-border p-4 rounded-sm flex flex-col gap-3 relative overflow-hidden group focus-within:border-term-cyan/50 transition-colors">
           <div className="flex justify-between text-xs text-term-dim tracking-widest">
-            <span>YOU PAY</span>
+            <label htmlFor={amountInputId} className="cursor-pointer hover:text-white transition-colors">YOU PAY</label>
             <span>BALANCE: 14.2 {side === "buy" ? "SOL" : symbol}</span>
           </div>
           <div className="flex items-center justify-between">
             <input
+              id={amountInputId}
               type="number"
               placeholder="0.00"
               value={amount}
