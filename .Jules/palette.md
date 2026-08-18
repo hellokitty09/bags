@@ -1,0 +1,3 @@
+## 2024-08-18 - Swap Panel Accessibility
+**Learning:** In the Swap Panel component, custom toggle buttons used for selecting Buy/Sell sides lacked screen-reader feedback, and the main input lacked a programmatic label.
+**Action:** When implementing custom toggle button groups, always use `aria-pressed` to indicate the active state to screen readers. For inputs that have a descriptive text element nearby (like "YOU PAY"), convert the text element into a `<label>` linked to the input using React's `useId()` and `htmlFor` to improve both screen-reader accessibility and click target size for users.
