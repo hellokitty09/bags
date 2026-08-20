@@ -39,16 +39,18 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
         <div className="flex bg-term-bg border border-term-border p-1 rounded-sm">
           <button
             onClick={() => setSide("buy")}
-            className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors ${
-              side === "buy" ? "bg-term-green/20 text-term-green border border-term-green/30" : "text-term-dim hover:text-white"
+            aria-pressed={side === "buy"}
+            className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors outline-none focus-visible:ring-1 focus-visible:ring-term-cyan/50 ${
+              side === "buy" ? "bg-term-green/20 text-term-green border border-term-green/30" : "text-term-dim hover:text-white border border-transparent"
             }`}
           >
             Buy {symbol}
           </button>
           <button
             onClick={() => setSide("sell")}
-            className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors ${
-              side === "sell" ? "bg-term-red/20 text-term-red border border-term-red/30" : "text-term-dim hover:text-white"
+            aria-pressed={side === "sell"}
+            className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors outline-none focus-visible:ring-1 focus-visible:ring-term-cyan/50 ${
+              side === "sell" ? "bg-term-red/20 text-term-red border border-term-red/30" : "text-term-dim hover:text-white border border-transparent"
             }`}
           >
             Sell {symbol}
@@ -56,7 +58,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
         </div>
 
         {/* Input Form */}
-        <div className="bg-term-bg border border-term-border p-4 rounded-sm flex flex-col gap-3 relative overflow-hidden group focus-within:border-term-cyan/50 transition-colors">
+        <div className="bg-term-bg border border-term-border p-4 rounded-sm flex flex-col gap-3 relative overflow-hidden group focus-within:border-term-cyan/50 focus-within:ring-1 focus-within:ring-term-cyan/50 transition-all">
           <div className="flex justify-between text-xs text-term-dim tracking-widest">
             <span>YOU PAY</span>
             <span>BALANCE: 14.2 {side === "buy" ? "SOL" : symbol}</span>
@@ -64,6 +66,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
           <div className="flex items-center justify-between">
             <input
               type="number"
+              aria-label={`Amount to ${side}`}
               placeholder="0.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
@@ -86,7 +89,8 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
         <button
           onClick={handleSwap}
           disabled={swapping || !amount || Number(amount) <= 0}
-          className={`w-full py-4 text-sm font-bold tracking-[0.2em] uppercase transition-all duration-300 relative overflow-hidden flex items-center justify-center gap-3 mt-2 ${
+          aria-busy={swapping}
+          className={`w-full py-4 text-sm font-bold tracking-[0.2em] uppercase transition-all duration-300 relative overflow-hidden flex items-center justify-center gap-3 mt-2 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-term-bg focus-visible:ring-term-cyan/50 ${
             success 
               ? "bg-term-cyan/20 border border-term-cyan text-term-cyan" 
               : side === "buy" 
