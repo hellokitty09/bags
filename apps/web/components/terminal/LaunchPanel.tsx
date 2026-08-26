@@ -128,6 +128,7 @@ export function LaunchPanel({ onSuccess }: LaunchPanelProps) {
           </p>
           <div className="flex gap-2">
             <input
+              aria-label="Token mint address"
               type="text"
               value={mint}
               onChange={(e) => { setMint(e.target.value); setStatus("idle"); setErrorMsg(""); }}

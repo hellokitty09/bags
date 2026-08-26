@@ -63,6 +63,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
           </div>
           <div className="flex items-center justify-between">
             <input
+              aria-label="Swap amount"
               type="number"
               placeholder="0.00"
               value={amount}
