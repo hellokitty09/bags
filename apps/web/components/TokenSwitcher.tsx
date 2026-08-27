@@ -112,6 +112,7 @@ export function TokenSwitcher({ value, onChange }: Props) {
             }}
             className="px-2 py-2 text-term-dim hover:text-term-red transition-colors duration-200"
             title="Cancel"
+            aria-label="Cancel token linking"
           >
             ✕
           </button>
