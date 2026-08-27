@@ -1,0 +1,1 @@
+## 2024-08-27 - Icon buttons need ARIA labels\n**Learning:** The `✕` button in `TokenSwitcher.tsx` lacks an `aria-label`, reducing accessibility for screen reader users. Icon-only buttons should consistently have `aria-label` attributes.\n**Action:** Add an `aria-label` to the cancel button in `TokenSwitcher.tsx` and audit other icon-only buttons.
