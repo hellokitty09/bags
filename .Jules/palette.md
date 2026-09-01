@@ -1,0 +1,3 @@
+## 2024-11-20 - [Accessibility] Improve form controls without visual clutter
+**Learning:** Reusable components like `TokenSwitcher` that have multiple instances or transient input fields (like the "add token" view) can lack explicit label associations, causing screen reader issues. Adding visual labels isn't always desirable for compact UI designs.
+**Action:** Use React's `useId()` hook to generate unique IDs and pair them with explicit `<label htmlFor={id}>` tags. For visually compact inputs, use the `sr-only` class on the label to maintain accessibility without altering the visual design. Always add explicit `aria-label`s to icon-only buttons (like `✕` for cancel).
