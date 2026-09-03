@@ -1,0 +1,3 @@
+## 2024-10-24 - Screen Reader Labels for Dynamic Responsive Layouts
+**Learning:** When hiding labels on mobile (`hidden sm:block`) but displaying inputs dynamically (e.g. `TokenSwitcher.tsx`), screen readers lose critical context. Additionally, explicit `htmlFor` bindings using React's `useId()` ensure proper association inside reusable client components.
+**Action:** Use `sr-only sm:not-sr-only` instead of `hidden sm:block` for structural form labels to ensure they are visually hidden on mobile while remaining accessible to screen readers. Always bind labels dynamically using `useId()` if multiple instances could exist on the page.

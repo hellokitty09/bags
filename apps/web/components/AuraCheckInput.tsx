@@ -18,6 +18,7 @@ export function AuraCheckInput() {
   return (
     <div className="flex gap-2 max-w-lg mx-auto w-full">
       <input
+        aria-label="Token mint address"
         type="text"
         value={mint}
         onChange={(e) => setMint(e.target.value)}
