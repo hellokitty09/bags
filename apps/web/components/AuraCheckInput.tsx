@@ -19,6 +19,7 @@ export function AuraCheckInput() {
     <div className="flex gap-2 max-w-lg mx-auto w-full">
       <input
         type="text"
+        aria-label="Paste any token mint address"
         value={mint}
         onChange={(e) => setMint(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleCheck()}
