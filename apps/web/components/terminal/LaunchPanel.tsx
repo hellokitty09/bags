@@ -129,6 +129,7 @@ export function LaunchPanel({ onSuccess }: LaunchPanelProps) {
           <div className="flex gap-2">
             <input
               type="text"
+              aria-label="Paste mint address"
               value={mint}
               onChange={(e) => { setMint(e.target.value); setStatus("idle"); setErrorMsg(""); }}
               placeholder="Paste mint address..."
