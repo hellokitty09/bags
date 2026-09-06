@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import { useRouter } from "next/navigation";
 
 export function AuraCheckInput() {
   const [mint, setMint] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const inputId = useId();
 
   function handleCheck() {
     const trimmed = mint.trim();
@@ -16,14 +17,17 @@ export function AuraCheckInput() {
   }
 
   return (
-    <div className="flex gap-2 max-w-lg mx-auto w-full">
+    <div className="flex gap-2 max-w-lg mx-auto w-full items-center">
+      <label htmlFor={inputId} className="sr-only">Token mint address</label>
       <input
+        id={inputId}
         type="text"
         value={mint}
         onChange={(e) => setMint(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleCheck()}
         placeholder="Paste any token mint address..."
-        className="flex-1 bg-term-bg border border-term-border/50 focus:border-term-cyan text-white text-xs px-4 py-3 outline-none placeholder:text-term-dim/40 font-mono transition-colors"
+        disabled={loading}
+        className="flex-1 bg-term-bg border border-term-border/50 focus:border-term-cyan text-white text-xs px-4 py-3 outline-none placeholder:text-term-dim/40 font-mono transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       />
       <button
         onClick={handleCheck}
