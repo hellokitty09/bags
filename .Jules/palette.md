@@ -1,0 +1,3 @@
+## 2024-06-25 - [Accessibility: Explicit Form Labeling with useId()]
+**Learning:** React's `useId()` is crucial for explicitly associating `<label>` tags with their respective input elements (`htmlFor`/`id`) within reusable components. This prevents ID collisions when a component is rendered multiple times on the same page. Furthermore, pairing an `sr-only` visually hidden label with a generated ID provides robust screen reader support for inputs where a visible label would break a compact or inline UI layout.
+**Action:** Use `useId()` to generate unique IDs for all explicit form associations (`<label htmlFor={id}>` + `<input id={id}>`) in new and existing reusable components.
