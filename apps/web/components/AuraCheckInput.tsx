@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import { useRouter } from "next/navigation";
 
 export function AuraCheckInput() {
   const [mint, setMint] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const inputId = useId();
 
   function handleCheck() {
     const trimmed = mint.trim();
@@ -17,7 +18,9 @@ export function AuraCheckInput() {
 
   return (
     <div className="flex gap-2 max-w-lg mx-auto w-full">
+      <label htmlFor={inputId} className="sr-only">Token Mint Address</label>
       <input
+        id={inputId}
         type="text"
         value={mint}
         onChange={(e) => setMint(e.target.value)}
