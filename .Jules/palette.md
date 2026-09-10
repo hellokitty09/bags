@@ -1,0 +1,3 @@
+## 2024-09-10 - Bypassing Privy Auth during testing
+**Learning:** When using demo mode with a dummy Privy app ID for visual verification or testing, navigating to the root (`/`) can trigger a fatal "Invalid Privy app ID" error during authentication provider initialization. However, navigating directly to specific views with the demo parameter (e.g., `/terminal?demo=true`) successfully bypasses this initialization issue.
+**Action:** For automated testing and Playwright verification scripts in demo mode, always use direct deep links with the `?demo=true` query parameter instead of starting at the root.
