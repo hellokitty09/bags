@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import { Panel } from "./Panel";
 
 export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
@@ -8,6 +8,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
   const [amount, setAmount] = useState<string>("");
   const [swapping, setSwapping] = useState(false);
   const [success, setSuccess] = useState(false);
+  const amountInputId = useId();
 
   // Simulated exchange rate: 1 SOL = 5,420 TOKEN
   const rate = 5420.5;
@@ -40,7 +41,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
           <button
             onClick={() => setSide("buy")}
             className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors ${
-              side === "buy" ? "bg-term-green/20 text-term-green border border-term-green/30" : "text-term-dim hover:text-white"
+              side === "buy" ? "bg-term-green/20 text-term-green border border-term-green/30" : "text-term-dim hover:text-white border border-transparent"
             }`}
           >
             Buy {symbol}
@@ -48,7 +49,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
           <button
             onClick={() => setSide("sell")}
             className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors ${
-              side === "sell" ? "bg-term-red/20 text-term-red border border-term-red/30" : "text-term-dim hover:text-white"
+              side === "sell" ? "bg-term-red/20 text-term-red border border-term-red/30" : "text-term-dim hover:text-white border border-transparent"
             }`}
           >
             Sell {symbol}
@@ -62,7 +63,9 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
             <span>BALANCE: 14.2 {side === "buy" ? "SOL" : symbol}</span>
           </div>
           <div className="flex items-center justify-between">
+            <label htmlFor={amountInputId} className="sr-only">Amount</label>
             <input
+              id={amountInputId}
               type="number"
               placeholder="0.00"
               value={amount}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 
 interface LaunchPanelProps {
   onSuccess: (mint: string, symbol: string) => void;
@@ -14,6 +14,7 @@ export function LaunchPanel({ onSuccess }: LaunchPanelProps) {
   const [errorMsg, setErrorMsg] = useState("");
   const [currentStep, setCurrentStep] = useState<Step>(1);
   const [launchOpened, setLaunchOpened] = useState(false);
+  const mintInputId = useId();
 
   function handleOpenBags() {
     window.open(
@@ -127,7 +128,9 @@ export function LaunchPanel({ onSuccess }: LaunchPanelProps) {
             Paste your token mint address — we&apos;ll wire up real-time webhooks and load your dashboard in 3 seconds.
           </p>
           <div className="flex gap-2">
+            <label htmlFor={mintInputId} className="sr-only">Mint Address</label>
             <input
+              id={mintInputId}
               type="text"
               value={mint}
               onChange={(e) => { setMint(e.target.value); setStatus("idle"); setErrorMsg(""); }}
