@@ -1,0 +1,3 @@
+## 2024-05-24 - [Accessible Form Inputs]
+**Learning:** Reusable components like `TokenSwitcher` that dynamically appear multiple times on a page or are deeply nested can suffer from ID collisions if static IDs are used for `<label>` association. React's `useId` hook is a robust solution to generate unique IDs for tying `<label>` tags to `<input>` or `<select>` elements, maintaining screen reader accessibility without risk of ID conflicts.
+**Action:** Always use `useId` when explicitly associating form labels dynamically to ensure cross-component compatibility and strict accessibility.
