@@ -1,0 +1,4 @@
+## 2024-05-17 - Explicit Form Labels and Layout Shift Prevention
+
+**Learning:** When generating programmatic inputs in reusable components (like `SwapPanel` and `TokenSwitcher`), using implicit labels (wrapping inputs with labels) can sometimes be ambiguous or less optimal for screen readers compared to explicit `htmlFor`/`id` bindings. Additionally, conditionally rendering a border on active button states can cause a 2px layout shift, creating a jarring "jump" when toggling options.
+**Action:** Use React's `useId()` hook to generate unique IDs for explicit `htmlFor`/`id` bindings to ensure perfect screen reader association and prevent ID collisions across component instances. When adding borders for active states (e.g., `border-term-green/30`), apply `border border-transparent` to the inactive state to maintain stable dimensions and prevent layout shifts.
