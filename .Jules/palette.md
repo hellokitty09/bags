@@ -1,0 +1,3 @@
+## 2024-05-19 - Accessible Form Controls in Dynamic Components
+**Learning:** Dynamic components with conditionally rendered UI (like TokenSwitcher) or multiple instances need `useId()` for robust ID generation to ensure `htmlFor` and `id` properly associate inputs with labels without conflict. Additionally, icon-only buttons require explicit `aria-label` attributes to ensure screen readers understand their function.
+**Action:** Always use `useId()` when explicitly associating form labels with inputs dynamically to prevent ID clashes, and ensure ARIA attributes are applied to inputs lacking visual labels and buttons without text.
