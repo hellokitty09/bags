@@ -1,0 +1,3 @@
+## 2024-09-27 - [Token Switcher explicitly linked labels]
+**Learning:** For components that may be rendered multiple times or dynamically, explicit `id` attributes created manually can clash. Unlinked labels without proper IDs result in inaccessible form elements for screen readers. Using implicit labels for hidden inputs requires adding `sr-only` labels.
+**Action:** Always use React's `useId()` when explicitly associating `<label>`s with `<input>`s or `<select>`s to prevent ID clashes. For compact layouts without visual labels, maintain accessibility with `sr-only` visually hidden labels. Ensure all buttons, including icon-only buttons like "✕", have an explicit `aria-label`.

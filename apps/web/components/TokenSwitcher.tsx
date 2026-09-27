@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 
 interface TokenOption {
   mint: string;
@@ -18,6 +18,8 @@ export function TokenSwitcher({ value, onChange }: Props) {
   const [adding, setAdding] = useState(false);
   const [mintInput, setMintInput] = useState("");
   const [showInput, setShowInput] = useState(false);
+  const selectId = useId();
+  const inputId = useId();
 
   useEffect(() => {
     fetch("/api/me")
@@ -68,17 +70,18 @@ export function TokenSwitcher({ value, onChange }: Props) {
 
   return (
     <div className="flex items-center gap-3 text-xs">
-      <label className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
+      <label htmlFor={selectId} className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
         token
       </label>
 
       <select
+        id={selectId}
         value={value ?? ""}
         onChange={(e) => {
           const t = tokens.find((x) => x.mint === e.target.value);
           if (t) onChange(t.mint, t.symbol);
         }}
-        className="bg-term-panel border border-term-border hover:border-term-green/40 focus:border-term-green/60 focus:outline-none px-3 py-2 text-term-text min-w-[160px] rounded-sm transition-all duration-200 cursor-pointer appearance-none"
+        className="bg-term-panel border border-term-border hover:border-term-green/40 focus:border-term-green/60 focus-visible:ring-2 focus-visible:ring-term-green/60 focus:outline-none px-3 py-2 text-term-text min-w-[160px] rounded-sm transition-all duration-200 cursor-pointer appearance-none"
       >
         {tokens.length === 0 && <option value="">no tokens linked</option>}
         {tokens.map((t) => (
@@ -90,18 +93,20 @@ export function TokenSwitcher({ value, onChange }: Props) {
 
       {showInput ? (
         <div className="flex items-center gap-2 animate-fadeIn">
+          <label htmlFor={inputId} className="sr-only">Paste mint address</label>
           <input
+            id={inputId}
             autoFocus
             value={mintInput}
             onChange={(e) => setMintInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="paste mint address"
-            className="bg-term-panel border border-term-border focus:border-term-green/60 focus:outline-none focus:shadow-[0_0_10px_rgba(57,255,136,0.1)] px-3 py-2 text-term-text w-[240px] sm:w-[300px] rounded-sm transition-all duration-200 placeholder:text-term-dim/50"
+            className="bg-term-panel border border-term-border focus:border-term-green/60 focus-visible:ring-2 focus-visible:ring-term-green/60 focus:outline-none focus:shadow-[0_0_10px_rgba(57,255,136,0.1)] px-3 py-2 text-term-text w-[240px] sm:w-[300px] rounded-sm transition-all duration-200 placeholder:text-term-dim/50"
           />
           <button
             onClick={addToken}
             disabled={adding || !mintInput}
-            className="px-4 py-2 bg-term-green/10 border border-term-green text-term-green uppercase tracking-[0.15em] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-term-green/20 hover:shadow-[0_0_15px_rgba(57,255,136,0.2)] active:bg-term-green/30 transition-all duration-200 rounded-sm whitespace-nowrap"
+            className="px-4 py-2 bg-term-green/10 border border-term-green text-term-green uppercase tracking-[0.15em] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-term-green/20 hover:shadow-[0_0_15px_rgba(57,255,136,0.2)] active:bg-term-green/30 focus-visible:ring-2 focus-visible:ring-term-green/60 focus:outline-none transition-all duration-200 rounded-sm whitespace-nowrap"
           >
             {adding ? "linking…" : "link"}
           </button>
@@ -110,8 +115,9 @@ export function TokenSwitcher({ value, onChange }: Props) {
               setShowInput(false);
               setMintInput("");
             }}
-            className="px-2 py-2 text-term-dim hover:text-term-red transition-colors duration-200"
+            className="px-2 py-2 text-term-dim hover:text-term-red focus-visible:ring-2 focus-visible:ring-term-green/60 focus:outline-none transition-colors duration-200"
             title="Cancel"
+            aria-label="Cancel linking token"
           >
             ✕
           </button>
@@ -119,7 +125,7 @@ export function TokenSwitcher({ value, onChange }: Props) {
       ) : (
         <button
           onClick={() => setShowInput(true)}
-          className="px-4 py-2 border border-term-green/60 text-term-green uppercase tracking-[0.15em] hover:bg-term-green/10 hover:border-term-green hover:shadow-[0_0_15px_rgba(57,255,136,0.15)] active:bg-term-green/20 transition-all duration-200 rounded-sm whitespace-nowrap"
+          className="px-4 py-2 border border-term-green/60 text-term-green uppercase tracking-[0.15em] hover:bg-term-green/10 hover:border-term-green hover:shadow-[0_0_15px_rgba(57,255,136,0.15)] active:bg-term-green/20 focus-visible:ring-2 focus-visible:ring-term-green/60 focus:outline-none transition-all duration-200 rounded-sm whitespace-nowrap"
         >
           + link token
         </button>
