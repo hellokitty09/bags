@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 
 interface LaunchPanelProps {
   onSuccess: (mint: string, symbol: string) => void;
@@ -10,6 +10,7 @@ type Step = 1 | 2 | 3;
 
 export function LaunchPanel({ onSuccess }: LaunchPanelProps) {
   const [mint, setMint] = useState("");
+  const inputId = useId();
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [currentStep, setCurrentStep] = useState<Step>(1);
@@ -127,7 +128,9 @@ export function LaunchPanel({ onSuccess }: LaunchPanelProps) {
             Paste your token mint address — we&apos;ll wire up real-time webhooks and load your dashboard in 3 seconds.
           </p>
           <div className="flex gap-2">
+            <label htmlFor={inputId} className="sr-only">Token mint address</label>
             <input
+              id={inputId}
               type="text"
               value={mint}
               onChange={(e) => { setMint(e.target.value); setStatus("idle"); setErrorMsg(""); }}
