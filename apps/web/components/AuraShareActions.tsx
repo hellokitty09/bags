@@ -67,12 +67,14 @@ export function AuraShareActions({ mint, symbol, score, tier }: Props) {
         </a>
         <button
           onClick={onCopyShareText}
+          aria-live="polite"
           className="flex-1 px-5 py-3 border border-term-cyan/50 text-term-cyan hover:text-white hover:border-term-cyan hover:bg-term-cyan/10 uppercase tracking-[0.2em] text-xs transition-all"
         >
           {copied ? "✓ Copied!" : "Copy Share Text"}
         </button>
         <button
           onClick={onCopy}
+          aria-live="polite"
           className="flex-1 px-5 py-3 border border-term-border/60 text-term-dim hover:text-white hover:border-white uppercase tracking-[0.2em] text-xs transition-all"
         >
           {copied ? "✓ Copied!" : "Copy Link"}
