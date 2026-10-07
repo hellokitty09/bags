@@ -85,7 +85,7 @@ export function MarketSignals({ mint }: Props) {
 
 function Bar({ label, pct, color }: { label: string; pct: number; color: string }) {
   return (
-    <div className="metric">
+    <div className="metric" role="meter" aria-label={label} aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
       <span className="metric-label">
         {label} · {fmtPct(pct, 1)}
       </span>
