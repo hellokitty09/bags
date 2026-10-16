@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import { Panel } from "./Panel";
 
 export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
+  const inputId = useId();
   const [side, setSide] = useState<"buy" | "sell">("buy");
   const [amount, setAmount] = useState<string>("");
   const [swapping, setSwapping] = useState(false);
@@ -39,16 +40,16 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
         <div className="flex bg-term-bg border border-term-border p-1 rounded-sm">
           <button
             onClick={() => setSide("buy")}
-            className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors ${
-              side === "buy" ? "bg-term-green/20 text-term-green border border-term-green/30" : "text-term-dim hover:text-white"
+            className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-term-green ${
+              side === "buy" ? "bg-term-green/20 text-term-green border border-term-green/30" : "text-term-dim hover:text-white border border-transparent"
             }`}
           >
             Buy {symbol}
           </button>
           <button
             onClick={() => setSide("sell")}
-            className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors ${
-              side === "sell" ? "bg-term-red/20 text-term-red border border-term-red/30" : "text-term-dim hover:text-white"
+            className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-term-green ${
+              side === "sell" ? "bg-term-red/20 text-term-red border border-term-red/30" : "text-term-dim hover:text-white border border-transparent"
             }`}
           >
             Sell {symbol}
@@ -58,11 +59,12 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
         {/* Input Form */}
         <div className="bg-term-bg border border-term-border p-4 rounded-sm flex flex-col gap-3 relative overflow-hidden group focus-within:border-term-cyan/50 transition-colors">
           <div className="flex justify-between text-xs text-term-dim tracking-widest">
-            <span>YOU PAY</span>
+            <label htmlFor={inputId}>YOU PAY</label>
             <span>BALANCE: 14.2 {side === "buy" ? "SOL" : symbol}</span>
           </div>
           <div className="flex items-center justify-between">
             <input
+              id={inputId}
               type="number"
               placeholder="0.00"
               value={amount}
