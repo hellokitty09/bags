@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 
 interface TokenOption {
   mint: string;
@@ -18,6 +18,9 @@ export function TokenSwitcher({ value, onChange }: Props) {
   const [adding, setAdding] = useState(false);
   const [mintInput, setMintInput] = useState("");
   const [showInput, setShowInput] = useState(false);
+
+  const selectId = useId();
+  const inputId = useId();
 
   useEffect(() => {
     fetch("/api/me")
@@ -68,11 +71,12 @@ export function TokenSwitcher({ value, onChange }: Props) {
 
   return (
     <div className="flex items-center gap-3 text-xs">
-      <label className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
+      <label htmlFor={selectId} className="text-term-dim uppercase tracking-[0.2em] hidden sm:block">
         token
       </label>
 
       <select
+        id={selectId}
         value={value ?? ""}
         onChange={(e) => {
           const t = tokens.find((x) => x.mint === e.target.value);
@@ -90,7 +94,9 @@ export function TokenSwitcher({ value, onChange }: Props) {
 
       {showInput ? (
         <div className="flex items-center gap-2 animate-fadeIn">
+          <label htmlFor={inputId} className="sr-only">Mint Address</label>
           <input
+            id={inputId}
             autoFocus
             value={mintInput}
             onChange={(e) => setMintInput(e.target.value)}
@@ -110,7 +116,8 @@ export function TokenSwitcher({ value, onChange }: Props) {
               setShowInput(false);
               setMintInput("");
             }}
-            className="px-2 py-2 text-term-dim hover:text-term-red transition-colors duration-200"
+            aria-label="Cancel link token"
+            className="px-2 py-2 text-term-dim hover:text-term-red transition-colors duration-200 focus-visible:outline-none focus-visible:text-term-red"
             title="Cancel"
           >
             ✕
@@ -119,7 +126,7 @@ export function TokenSwitcher({ value, onChange }: Props) {
       ) : (
         <button
           onClick={() => setShowInput(true)}
-          className="px-4 py-2 border border-term-green/60 text-term-green uppercase tracking-[0.15em] hover:bg-term-green/10 hover:border-term-green hover:shadow-[0_0_15px_rgba(57,255,136,0.15)] active:bg-term-green/20 transition-all duration-200 rounded-sm whitespace-nowrap"
+          className="px-4 py-2 border border-term-green/60 text-term-green uppercase tracking-[0.15em] hover:bg-term-green/10 hover:border-term-green hover:shadow-[0_0_15px_rgba(57,255,136,0.15)] active:bg-term-green/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-term-green transition-all duration-200 rounded-sm whitespace-nowrap"
         >
           + link token
         </button>
