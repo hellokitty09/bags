@@ -1,0 +1,3 @@
+## 2024-10-18 - Form Accessibility in Dynamic Components
+**Learning:** For reusable or dynamic components with form fields (like the Token Switcher), inputs and their labels can cause ID collisions on pages with multiple instances, causing screen readers to misread associations. Icon-only buttons (like cancel `✕`) completely lose context without ARIA labels.
+**Action:** Always use React's `useId()` to dynamically generate `htmlFor` and `id` pairs to explicitly associate form labels with inputs. For compact layouts without visible labels, include a visually hidden label (`<label className="sr-only">`). Consistently apply `aria-label` to icon-only interactive elements.
