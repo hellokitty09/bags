@@ -40,7 +40,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
           <button
             onClick={() => setSide("buy")}
             className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors ${
-              side === "buy" ? "bg-term-green/20 text-term-green border border-term-green/30" : "text-term-dim hover:text-white"
+              side === "buy" ? "bg-term-green/20 text-term-green border border-term-green/30" : "text-term-dim hover:text-white border border-transparent"
             }`}
           >
             Buy {symbol}
@@ -48,7 +48,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
           <button
             onClick={() => setSide("sell")}
             className={`flex-1 py-2 text-xs font-bold tracking-widest uppercase transition-colors ${
-              side === "sell" ? "bg-term-red/20 text-term-red border border-term-red/30" : "text-term-dim hover:text-white"
+              side === "sell" ? "bg-term-red/20 text-term-red border border-term-red/30" : "text-term-dim hover:text-white border border-transparent"
             }`}
           >
             Sell {symbol}
@@ -67,6 +67,7 @@ export function SwapPanel({ mint, symbol }: { mint: string; symbol: string }) {
               placeholder="0.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
+              aria-label={`Amount to ${side}`}
               className="bg-transparent text-3xl text-white font-mono outline-none w-full appearance-none m-0"
               style={{ MozAppearance: "textfield" }}
             />
